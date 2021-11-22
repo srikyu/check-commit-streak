@@ -12,12 +12,17 @@ def lambda_handler(event, context):
     return "hoge"
 
 
+# 最終コミット日付を取得する
 def getLastCommitDate():
-    last_commit_date = request.Request(GITHUB_API)
     with request.urlopen(GITHUB_API) as res:
-        hoge = res.read()
-        hoge = hoge.decode()
+        api_result = res.read()
+        decode_result = json.loads(api_result.decode('utf-8'))
+        last_commit_date = decode_result[0]["commit"]["committer"]["date"]
 
-        fuga = hoge["commit"]["committer"]["date"]
-        print(fuga)
-    return hoge
+    return last_commit_date
+
+# 最終コミット日付と今日の日付を比較して連続で更新されているのかチェックする
+
+
+def checkDateStreak(last_commit_date):
+    if
